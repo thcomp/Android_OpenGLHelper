@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:weightSum="1.0"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<FrameLayout 
+		android:id="@+id/FrameForGL"
+		android:layout_weight="1.0" 
+		android:layout_width="match_parent"
+		android:layout_height="0dp"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="0.8"
+		android:orientation="horizontal">
+
+		<Switch
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="R"
+			android:id="@+id/EnableRotate"/>
+		<Switch
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="E"
+			android:id="@+id/EnableEye"/>
+		<Switch
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="C"
+			android:id="@+id/EnableCenter"/>
+		<Switch
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="U"
+			android:id="@+id/EnableUp"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" >
+	
+		<SeekBar
+			android:id="@+id/CameraXSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+		<SeekBar
+			android:id="@+id/CameraYSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+		<SeekBar
+			android:id="@+id/CameraZSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+	</LinearLayout>
+</LinearLayout>
