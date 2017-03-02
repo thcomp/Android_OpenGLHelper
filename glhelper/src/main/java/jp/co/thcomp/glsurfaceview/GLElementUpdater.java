@@ -28,6 +28,7 @@ public class GLElementUpdater {
         }
         mView = view;
         mUpdaterThread = new HandlerThread(GLElementUpdater.class.getSimpleName(), Thread.MIN_PRIORITY);
+        mUpdaterThread.start();
         mUpdaterHandler = new Handler(mUpdaterThread.getLooper(), mUpdateDrawElementCallback);
     }
 

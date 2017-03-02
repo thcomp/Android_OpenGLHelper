@@ -1,6 +1,6 @@
 package jp.co.thcomp;
 
-import jp.co.thcomp.gl.R;
+import jp.co.thcomp.gl_sample.R;
 import jp.co.thcomp.glsurfaceview.GLCircle;
 import jp.co.thcomp.glsurfaceview.GLConstant;
 import jp.co.thcomp.glsurfaceview.GLContext;
@@ -101,7 +101,7 @@ public class TestActivity extends Activity implements OnTouchListener, OnSeekBar
 		mQuad.setDrawRect(drawRect);
 		//mQuad.setDrawRect(new Rect(0, 0, 100, 100));
 		//mQuad.setColors(new float[]{0.0f}, new float[]{1.0f}, new float[]{0.0f}, new float[]{0.5f});
-		Bitmap drawableBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+		Bitmap drawableBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 		//Bitmap texBitmap = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
 		//Canvas canvas = new Canvas(texBitmap);
 		//canvas.drawBitmap(drawableBitmap, new Rect(0, 0, drawableBitmap.getWidth(), drawableBitmap.getHeight()), new Rect(0, 0, 128, 128), null);

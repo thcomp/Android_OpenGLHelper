@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:weightSum="1.0"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<FrameLayout 
+		android:id="@+id/FrameForGL"
+		android:layout_weight="1.0" 
+		android:layout_width="match_parent"
+		android:layout_height="0dp"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="X"
+			android:id="@+id/RotateAxisX"/>
+
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Y"
+			android:id="@+id/RotateAxisY"/>
+
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Z"
+			android:id="@+id/RotateAxisZ"/>
+
+		<Button
+			android:id="@+id/RotateDroid"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="swing" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="1.2"
+		android:orientation="horizontal">
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="H"
+			android:id="@+id/SwingHead"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="B"
+			android:id="@+id/SwingBody"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="LA"
+			android:id="@+id/SwingLArm"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="RA"
+			android:id="@+id/SwingRArm"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="LF"
+			android:id="@+id/SwingLFoot"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="RF"
+			android:id="@+id/SwingRFoot"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="1"
+		android:orientation="horizontal">
+
+		<EditText
+			android:id="@+id/SwingDegree"
+			android:layout_weight="1"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:inputType="numberSigned"
+			android:hint="swing degree" />
+
+		<Button
+			android:id="@+id/SwingDroid"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="swing" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="0.8"
+		android:orientation="horizontal">
+
+		<!--RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="R"
+			android:id="@+id/EnableRotate"/-->
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="E"
+			android:id="@+id/EnableEye"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="C"
+			android:id="@+id/EnableCenter"/>
+		<RadioButton
+			android:layout_weight="0.2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="U"
+			android:id="@+id/EnableUp"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" >
+	
+		<SeekBar
+			android:id="@+id/CameraXSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+		<SeekBar
+			android:id="@+id/CameraYSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+		<SeekBar
+			android:id="@+id/CameraZSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	
+	</LinearLayout>
+</LinearLayout>
