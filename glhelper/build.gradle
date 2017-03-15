@@ -34,3 +34,18 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'jp.co.thcomp:android_utility:1.0.20'
 }
+
+def repo = new File(rootDir, "repository")
+
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file://${repo.absolutePath}"
+            pom.version = '0.0.1'
+            pom.groupId = 'jp.co.thcomp'
+            pom.artifactId = 'android_opengl_helper'
+        }
+    }
+}
