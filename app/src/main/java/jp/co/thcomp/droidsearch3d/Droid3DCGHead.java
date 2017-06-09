@@ -3,6 +3,7 @@ package jp.co.thcomp.droidsearch3d;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.opengl.GLES11;
 
 import jp.co.thcomp.glsurfaceview.GLCircle;
 import jp.co.thcomp.glsurfaceview.GLCylinder;
@@ -138,32 +139,32 @@ public class Droid3DCGHead extends Droid3DCGParts {
 	}
 
 	@Override
-	public void drawBase(GL10 gl) {
+	public void drawBase() {
 		boolean pushMatrix = false;
 		RotateInfo swingInfo = mSwingInfo;
 
 		try{
 			if(swingInfo != null && swingInfo.rotateDegree != 0){
-				gl.glPushMatrix();
+				GLES11.glPushMatrix();
 				pushMatrix = true;
-				gl.glRotatef(swingInfo.rotateDegree, swingInfo.centerX, swingInfo.centerY, swingInfo.centerZ);
+				GLES11.glRotatef(swingInfo.rotateDegree, swingInfo.centerX, swingInfo.centerY, swingInfo.centerZ);
 			}
 
-			mLHornHemiSphere.draw(gl);
-			mLHornCylinder.draw(gl);
-			mRHornHemiSphere.draw(gl);
-			mRHornCylinder.draw(gl);
-			mHeadHemiSphere.draw(gl);
-			mLEyeCircle.draw(gl);
-			mREyeCircle.draw(gl);
+			mLHornHemiSphere.draw();
+			mLHornCylinder.draw();
+			mRHornHemiSphere.draw();
+			mRHornCylinder.draw();
+			mHeadHemiSphere.draw();
+			mLEyeCircle.draw();
+			mREyeCircle.draw();
 		}finally{
 			if(pushMatrix){
-				gl.glPopMatrix();
+				GLES11.glPopMatrix();
 			}
 		}
 	}
 
 	@Override
-	public void release(GL10 gl) {
+	public void release() {
 	}
 }

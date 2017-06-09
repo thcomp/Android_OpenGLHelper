@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.opengl.GLES11;
 
 import jp.co.thcomp.glsurfaceview.GLDrawView;
 import jp.co.thcomp.glsurfaceview.GLPolygon;
@@ -96,7 +97,7 @@ public class Droid3DCG extends BaseDroid3DCG {
 	}
 
 	@Override
-	public void draw(GL10 gl) {
+	public void draw() {
 		boolean needPopMatrix = false;
 
 		try{
@@ -105,7 +106,7 @@ public class Droid3DCG extends BaseDroid3DCG {
 				GLViewSpace viewSpace = mView.getViewSpace();
 				needPopMatrix = true;
 
-				gl.glPushMatrix();
+				GLES11.glPushMatrix();
 				if(translateInfo.translateByXWR == Float.MAX_VALUE){
 					translateInfo.translateByXWR = viewSpace.changeViewPortXtoWorldReferenceX(translateInfo.translateByX);
 				}
@@ -115,16 +116,16 @@ public class Droid3DCG extends BaseDroid3DCG {
 				if(translateInfo.translateByZWR == Float.MAX_VALUE){
 					translateInfo.translateByZWR = viewSpace.changeViewPortZtoWorldReferenceZ(translateInfo.translateByZ);
 				}
-				gl.glTranslatef(translateInfo.translateByXWR, translateInfo.translateByYWR, translateInfo.translateByZWR);
+				GLES11.glTranslatef(translateInfo.translateByXWR, translateInfo.translateByYWR, translateInfo.translateByZWR);
 			}
 
 			RotateInfo rotateInfo = mDroidRotateInfo;
 			if(rotateInfo != null){
 				if(!needPopMatrix){
 					needPopMatrix = true;
-					gl.glPushMatrix();
+					GLES11.glPushMatrix();
 				}
-				gl.glRotatef(rotateInfo.rotateDegree, rotateInfo.centerX, rotateInfo.centerY, rotateInfo.centerZ);
+				GLES11.glRotatef(rotateInfo.rotateDegree, rotateInfo.centerX, rotateInfo.centerY, rotateInfo.centerZ);
 			}
 
 			//gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, mLightAmbient);
@@ -137,10 +138,10 @@ public class Droid3DCG extends BaseDroid3DCG {
 			//gl.glEnable(GL10.GL_NORMALIZE);
 			//gl.glNormal3f(0f, 1f, 0f);
 
-			super.draw(gl);
+			super.draw();
 		}finally{
 			if(needPopMatrix){
-				gl.glPopMatrix();
+				GLES11.glPopMatrix();
 			}
 		}
 	}

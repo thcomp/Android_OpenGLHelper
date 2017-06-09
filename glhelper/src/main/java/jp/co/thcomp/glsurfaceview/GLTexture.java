@@ -10,6 +10,9 @@ import javax.microedition.khronos.opengles.GL10;
 import jp.co.thcomp.util.Constant;
 import jp.co.thcomp.util.MediaUtil;
 import android.graphics.Bitmap;
+import android.opengl.GLES10;
+import android.opengl.GLES11;
+import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 public class GLTexture {
@@ -36,41 +39,41 @@ public class GLTexture {
 		mAutoRecycle = autoRecycle;
 	}
 
-	public void bind(GL10 gl){
+	public void bind(){
 		if(mTextureRegion != null){
-			gl.glActiveTexture(GL10.GL_TEXTURE0);
-			gl.glEnable(GL10.GL_TEXTURE_2D);
+			GLES20.glActiveTexture(GL10.GL_TEXTURE0);
+			GLES20.glEnable(GL10.GL_TEXTURE_2D);
 
 			if(mTextureId == null){
 				int tempTextureId[] = new int[1];
 
-				gl.glGenTextures(1, tempTextureId, 0);
+				GLES20.glGenTextures(1, tempTextureId, 0);
 				mTextureId = tempTextureId[0];
-				gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+				GLES20.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 
-				gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
+				GLES20.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
 				GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GL10.GL_RGBA, mTextureBitmap, 0);
 				unregistTextureBitmap();
 			}else{
-				gl.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
+				GLES20.glBindTexture(GL10.GL_TEXTURE_2D, mTextureId);
 			}
 
 			// need to allocate id every call
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+			GLES20.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+			GLES20.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+			GLES20.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+			GLES20.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
 
-			gl.glTexCoordPointer(TEXTURE_COORD_SIZE, GL10.GL_FLOAT, 0, mTextureRegion);
+			GLES11.glTexCoordPointer(TEXTURE_COORD_SIZE, GL10.GL_FLOAT, 0, mTextureRegion);
 		}
 	}
 
-	public void unbind(GL10 gl){
+	public void unbind(){
 		if(mTextureId != null){
 			synchronized(TEXTURE_BUFFER){
 				TEXTURE_BUFFER.put(mTextureId);
 				TEXTURE_BUFFER.position(0);
-				gl.glDeleteTextures(1, TEXTURE_BUFFER);
+				GLES20.glDeleteTextures(1, TEXTURE_BUFFER);
 				mTextureId = null;
 			}
 		}

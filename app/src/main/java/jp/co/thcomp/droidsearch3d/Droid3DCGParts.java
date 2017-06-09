@@ -3,6 +3,7 @@ package jp.co.thcomp.droidsearch3d;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.opengl.GLES11;
 
 import jp.co.thcomp.glsurfaceview.GLDrawView;
 import jp.co.thcomp.glsurfaceview.GLPolygon;
@@ -97,8 +98,8 @@ abstract public class Droid3DCGParts{
 		mSurfaceHeight = height;
 	}
 
-	public final void draw(GL10 gl){
-		gl.glPushMatrix();
+	public final void draw(){
+		GLES11.glPushMatrix();
 		GLViewSpace viewSpace = mView.getViewSpace();
 		{
 			RotateInfo baseRotateInfo = mAnimeRotateInfo;
@@ -114,10 +115,10 @@ abstract public class Droid3DCGParts{
 				if(baseTranslateInfo.translateByZWR == Float.MAX_VALUE){
 					baseTranslateInfo.translateByZWR = viewSpace.changeViewPortZtoWorldReferenceZ(baseTranslateInfo.translateByZ);
 				}
-				gl.glTranslatef(baseTranslateInfo.translateByXWR, baseTranslateInfo.translateByYWR, baseTranslateInfo.translateByZWR);
+				GLES11.glTranslatef(baseTranslateInfo.translateByXWR, baseTranslateInfo.translateByYWR, baseTranslateInfo.translateByZWR);
 			}
 			if(baseRotateInfo != null && baseRotateInfo.rotateDegree % 360 != 0){
-				gl.glRotatef(baseRotateInfo.rotateDegree, baseRotateInfo.centerX, baseRotateInfo.centerY, baseRotateInfo.centerZ);
+				GLES11.glRotatef(baseRotateInfo.rotateDegree, baseRotateInfo.centerX, baseRotateInfo.centerY, baseRotateInfo.centerZ);
 			}
 			if(baseScaleInfo != null){
 				if(baseScaleInfo.scaleXWR == Float.MAX_VALUE){
@@ -129,17 +130,17 @@ abstract public class Droid3DCGParts{
 				if(baseScaleInfo.scaleZWR == Float.MAX_VALUE){
 					baseScaleInfo.scaleZWR = viewSpace.changeViewPortSizeZtoWorldReferenceSizeZ(baseScaleInfo.scaleZ);
 				}
-				gl.glScalef(baseScaleInfo.scaleXWR, baseScaleInfo.scaleYWR, baseScaleInfo.scaleZWR);
+				GLES11.glScalef(baseScaleInfo.scaleXWR, baseScaleInfo.scaleYWR, baseScaleInfo.scaleZWR);
 			}
 		}
 
-		drawBase(gl);
+		drawBase();
 
-		gl.glPopMatrix();
+		GLES11.glPopMatrix();
 	}
 
 	abstract public void swing(float degree, int axis);
 	abstract public void rotate(float degree, int axis);
-	abstract public void drawBase(GL10 gl);
-	abstract public void release(GL10 gl);
+	abstract public void drawBase();
+	abstract public void release();
 }

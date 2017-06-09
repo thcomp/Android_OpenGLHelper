@@ -1,5 +1,8 @@
 package jp.co.thcomp.glsurfaceview;
 
+import android.opengl.GLES11;
+import android.opengl.GLES20;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -360,58 +363,57 @@ public class GLPolygon extends GLDrawElement{
 	}
 
 	@Override
-	public void draw(GL10 gl10) {
+	public void draw() {
 		if(mVertex != null){
-			GL11 gl = (GL11)gl10;
 			boolean enableVBO = mView.getGLContext().isEnableVBO();
 			if(enableVBO){
 				if(mVboId == null){
 					mVboId = new int[VBO_SIZE];
-					gl.glGenBuffers(VBO_SIZE, mVboId, 0);
-					gl.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_VERTEX]);
-					gl.glBufferData(GL11.GL_ARRAY_BUFFER, mVertexSize * Constant.FLOAT_SIZE * VERTEX_DIMENSION, mVertex, GL11.GL_STATIC_DRAW);
+					GLES20.glGenBuffers(VBO_SIZE, mVboId, 0);
+					GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_VERTEX]);
+					GLES20.glBufferData(GL11.GL_ARRAY_BUFFER, mVertexSize * Constant.FLOAT_SIZE * VERTEX_DIMENSION, mVertex, GL11.GL_STATIC_DRAW);
 					if(mNormals != null){
-						gl.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_NORMAL]);
-						gl.glBufferData(GL11.GL_ARRAY_BUFFER, mVertexSize * Constant.FLOAT_SIZE * VERTEX_DIMENSION, mVertex, GL11.GL_STATIC_DRAW);
+						GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_NORMAL]);
+						GLES20.glBufferData(GL11.GL_ARRAY_BUFFER, mVertexSize * Constant.FLOAT_SIZE * VERTEX_DIMENSION, mVertex, GL11.GL_STATIC_DRAW);
 					}
 					if(mColors != null){
-						gl.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_COLOR]);
-						gl.glBufferData(GL11.GL_ARRAY_BUFFER, mColorsSize * Constant.FLOAT_SIZE * COLORS_DIMENSION, mColors, GL11.GL_STATIC_DRAW);
+						GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_COLOR]);
+						GLES20.glBufferData(GL11.GL_ARRAY_BUFFER, mColorsSize * Constant.FLOAT_SIZE * COLORS_DIMENSION, mColors, GL11.GL_STATIC_DRAW);
 					}
 				}
 			}
 
 			if(mTexture != null){
-				gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-				mTexture.bind(gl);
+				GLES11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+				mTexture.bind();
 				if(mColors != null){
 					GLContext glContext = mView.mGLContext;
 					float[] colorArray = new float[]{mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3)};
 
 //					gl.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
-					gl.glEnable(GL10.GL_BLEND);
-					gl.glBlendFunc(glContext.getSFactor(), glContext.getDFactor());
-					gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_BLEND);
-					gl.glTexEnvfv(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_COLOR, colorArray, 0);
-					gl.glDisable(GL10.GL_BLEND);
+					GLES20.glEnable(GL10.GL_BLEND);
+					GLES20.glBlendFunc(glContext.getSFactor(), glContext.getDFactor());
+					GLES11.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_BLEND);
+					GLES11.glTexEnvfv(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_COLOR, colorArray, 0);
+					GLES20.glDisable(GL10.GL_BLEND);
 				}else{
-					gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
+					GLES11.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);
 				}
 			}else{
-				gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+				GLES11.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 				if(mColors != null){
 					if(mColorsSize == 1){
-						gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
-						gl.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
-						//gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+						GLES11.glDisableClientState(GL10.GL_COLOR_ARRAY);
+						GLES11.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
+						//GLES20.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 					}else{
-						gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-						gl.glColorPointer(4, GL10.GL_FLOAT, 0, mColors);
+						GLES11.glEnableClientState(GL10.GL_COLOR_ARRAY);
+						GLES11.glColorPointer(4, GL10.GL_FLOAT, 0, mColors);
 					}
 				}
 			}
 
-			gl.glPushMatrix();
+			GLES11.glPushMatrix();
 			GLViewSpace viewSpace = mView.getViewSpace();
 			{
 				ArrayList<RotateInfo> rotateInfoList = mRotateInfoList;
@@ -433,7 +435,7 @@ public class GLPolygon extends GLDrawElement{
 							if(translateInfo.translateByZWR == Float.MAX_VALUE){
 								translateInfo.translateByZWR = viewSpace.changeViewPortZtoWorldReferenceZ(translateInfo.translateByZ);
 							}
-							gl.glTranslatef(translateInfo.translateByXWR, translateInfo.translateByYWR, translateInfo.translateByZWR);
+							GLES11.glTranslatef(translateInfo.translateByXWR, translateInfo.translateByYWR, translateInfo.translateByZWR);
 						}
 					}
 				}
@@ -443,7 +445,7 @@ public class GLPolygon extends GLDrawElement{
 					for(int i = size-1; i>= 0; i--){
 						rotateInfo = rotateInfoList.get(i);
 						if(rotateInfo.rotateDegree % 360 != 0){
-							gl.glRotatef(rotateInfo.rotateDegree, rotateInfo.centerX, rotateInfo.centerY, rotateInfo.centerZ);
+							GLES11.glRotatef(rotateInfo.rotateDegree, rotateInfo.centerX, rotateInfo.centerY, rotateInfo.centerZ);
 						}
 					}
 				}
@@ -461,22 +463,22 @@ public class GLPolygon extends GLDrawElement{
 						if(scaleInfo.scaleZWR == Float.MAX_VALUE){
 							scaleInfo.scaleZWR = viewSpace.changeViewPortSizeZtoWorldReferenceSizeZ(scaleInfo.scaleZ);
 						}
-						gl.glScalef(scaleInfo.scaleXWR, scaleInfo.scaleYWR, scaleInfo.scaleZWR);
+						GLES11.glScalef(scaleInfo.scaleXWR, scaleInfo.scaleYWR, scaleInfo.scaleZWR);
 					}
 				}
 			}
 			if(enableVBO){
 				if(mNormals != null){
-					gl.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_NORMAL]);
-					gl.glNormalPointer(GL10.GL_FLOAT, 0, 0);
+					GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_NORMAL]);
+					GLES11.glNormalPointer(GL10.GL_FLOAT, 0, 0);
 				}
-				gl.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_VERTEX]);
-				gl.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, 0);
+				GLES20.glBindBuffer(GL11.GL_ARRAY_BUFFER, mVboId[VBO_INDEX_VERTEX]);
+				GLES11.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, 0);
 			}else{
-				gl.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, mVertex);
+				GLES11.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, mVertex);
 			}
-			gl.glDrawArrays(mDrawMode, 0, mVertexSize);
-			gl.glPopMatrix();
+			GLES20.glDrawArrays(mDrawMode, 0, mVertexSize);
+			GLES11.glPopMatrix();
 		}
 	}
 
@@ -489,14 +491,13 @@ public class GLPolygon extends GLDrawElement{
 	}
 
 	@Override
-	public void release(GL10 gl10) {
-		GL11 gl = (GL11)gl10;
+	public void release() {
 		if(mTexture != null){
-			mTexture.unbind(gl);
+			mTexture.unbind();
 			mTexture = null;
 		}
 		if(mVboId != null){
-			gl.glDeleteBuffers(VBO_SIZE, mVboId, 0);
+			GLES20.glDeleteBuffers(VBO_SIZE, mVboId, 0);
 		}
 	}
 
