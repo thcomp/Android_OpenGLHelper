@@ -8,6 +8,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Rect;
+import android.opengl.GLES11;
 
 import jp.co.thcomp.util.Constant;
 
@@ -119,32 +120,32 @@ public class GLPolygon3D extends GLDrawElement{
 	}
 
 	@Override
-	public void draw(GL10 gl) {
+	public void draw() {
 		if(mVertex != null){
 			if(mTexture != null){
-				gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-				mTexture.bind(gl);
+				GLES11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+				mTexture.bind();
 			}else{
-				gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+				GLES11.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 				if(mColors != null){
 					if(mColorsSize == 1){
-						gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
-						gl.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
+						GLES11.glDisableClientState(GL10.GL_COLOR_ARRAY);
+						GLES11.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
 						//gl.glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 					}else{
-						gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-						gl.glColorPointer(4, GL10.GL_FLOAT, 0, mColors);
+						GLES11.glEnableClientState(GL10.GL_COLOR_ARRAY);
+						GLES11.glColorPointer(4, GL10.GL_FLOAT, 0, mColors);
 					}
 				}
 			}
 
-			gl.glEnable(GL10.GL_NORMALIZE);
+			GLES11.glEnable(GL10.GL_NORMALIZE);
 			for(int i=0, size=mVertex.length; i<size; i++){
-				gl.glNormal3f(mNormalVector[i].get(0), mNormalVector[i].get(1), mNormalVector[i].get(2));
-				gl.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, mVertex[i]);
-				gl.glDrawArrays(mDrawMode, 0, mVertex[i].capacity() / VERTEX_DIMENSION);
+				GLES11.glNormal3f(mNormalVector[i].get(0), mNormalVector[i].get(1), mNormalVector[i].get(2));
+				GLES11.glVertexPointer(VERTEX_DIMENSION, GL10.GL_FLOAT, 0, mVertex[i]);
+				GLES11.glDrawArrays(mDrawMode, 0, mVertex[i].capacity() / VERTEX_DIMENSION);
 			}
-			gl.glDisable(GL10.GL_NORMALIZE);
+			GLES11.glDisable(GL10.GL_NORMALIZE);
 		}
 	}
 
@@ -157,9 +158,9 @@ public class GLPolygon3D extends GLDrawElement{
 	}
 
 	@Override
-	public void release(GL10 gl) {
+	public void release() {
 		if(mTexture != null){
-			mTexture.unbind(gl);
+			mTexture.unbind();
 			mTexture = null;
 		}
 	}

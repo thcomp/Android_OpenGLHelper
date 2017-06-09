@@ -220,7 +220,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
 		gl.glClearColor(mClearColorR, mClearColorG, mClearColorB, mClearColorA);
 
 		for(int iCount = 0; iCount < mRemovedElementList.size(); iCount++){
-			mRemovedElementList.remove(iCount).mTexture.unbind(gl);
+			mRemovedElementList.remove(iCount).mTexture.unbind();
 		}
 
 		mGLContext.getViewSpace().updateLookAt(gl);
@@ -270,7 +270,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
 				drawElementList = mDrawElementList.getBySortedIndex(i);
 				if(drawElementList != null){
 					for(int j=0,sizeJ=drawElementList.size(); j<sizeJ; j++){
-						drawElementList.get(j).draw(gl);
+						drawElementList.get(j).draw();
 					}
 				}
 			}

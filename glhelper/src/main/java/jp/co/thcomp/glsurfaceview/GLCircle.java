@@ -1,5 +1,8 @@
 package jp.co.thcomp.glsurfaceview;
 
+import android.opengl.GLES11;
+import android.opengl.GLES20;
+
 import javax.microedition.khronos.opengles.GL10;
 
 public class GLCircle extends GLPolygon {
@@ -41,7 +44,7 @@ public class GLCircle extends GLPolygon {
 	}
 
 	@Override
-	public void draw(GL10 gl) {
+	public void draw() {
 		GLViewSpace viewSpace = mView.getGLContext().getViewSpace();
 
 		if(mCenterXWR == Float.MAX_VALUE){
@@ -60,11 +63,11 @@ public class GLCircle extends GLPolygon {
 			mCircleHeightWR = viewSpace.changeViewPortSizeYtoWorldReferenceSizeY(mCircleHeight);
 		}
 
-		gl.glPushMatrix();
-		gl.glTranslatef(mCenterXWR, mCenterYWR, mCenterZWR);
-		gl.glScalef(mCircleWidthWR, mCircleHeightWR, 1f);
+		GLES11.glPushMatrix();
+        GLES11.glTranslatef(mCenterXWR, mCenterYWR, mCenterZWR);
+        GLES11.glScalef(mCircleWidthWR, mCircleHeightWR, 1f);
 
-		super.draw(gl);
-		gl.glPopMatrix();
+		super.draw();
+        GLES11.glPopMatrix();
 	}
 }

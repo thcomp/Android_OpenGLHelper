@@ -73,17 +73,17 @@ public abstract class BaseDroid3DCG extends GLDrawElement {
 	}
 
 	@Override
-	public void draw(GL10 gl) {
+	public void draw() {
 		Droid3DCGParts[] droid3DCGParts = mDroid3DCGParts;
 		for(int i=0; i<PartsCount; i++){
 			if(droid3DCGParts[i] != null){
-				droid3DCGParts[i].draw(gl);
+				droid3DCGParts[i].draw();
 			}
 		}
 	}
 
 	@Override
-	public void release(GL10 gl) {
+	public void release() {
 	}
 
 	public void swingParts(int partsType, float degree, int axis) {

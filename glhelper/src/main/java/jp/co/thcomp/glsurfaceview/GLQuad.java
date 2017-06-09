@@ -30,13 +30,13 @@ public class GLQuad extends GLPolygon {
 	}
 
 	@Override
-	public void draw(GL10 gl) {
+	public void draw() {
 		if(mVertex == null){
 			float tempVertex[] = mView.getViewSpace().getWRRectFromVPRect(mRectInVP);
 			if(tempVertex != null){
 				setVertex(tempVertex);
 			}
 		}
-		super.draw(gl);
+		super.draw();
 	}
 }

@@ -57,8 +57,10 @@ abstract public class GLDrawElement implements GLSurfaceObserver, OnTouchListene
 		return -1;
 	}
 
-	abstract public void draw(GL10 gl);
-	abstract public void release(GL10 gl);
+	//abstract public void draw(GL10 gl);
+	//abstract public void release(GL10 gl);
+	abstract public void draw();
+	abstract public void release();
 	abstract public boolean isInRect(float xPosWR, float yPoxWR);
 	abstract public float getX();
 	abstract public float getY();
