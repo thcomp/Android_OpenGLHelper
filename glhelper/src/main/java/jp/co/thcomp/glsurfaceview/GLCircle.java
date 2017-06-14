@@ -18,7 +18,7 @@ public class GLCircle extends GLPolygon {
 	private float mCircleWidthWR = Float.MAX_VALUE;
 	private float mCircleHeightWR = Float.MAX_VALUE;
 
-	public GLCircle(GLDrawView view) {
+	public GLCircle(GLDrawViewController view) {
 		super(view);
 
 		mCircleInfo = GLVertexFactory.getCircleInfo();

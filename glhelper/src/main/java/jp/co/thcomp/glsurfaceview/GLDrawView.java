@@ -1,6 +1,7 @@
 package jp.co.thcomp.glsurfaceview;
 
 import android.content.Context;
+import android.opengl.GLES10;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,7 +21,7 @@ import jp.co.thcomp.util.Constant;
 import jp.co.thcomp.util.HashMultimap;
 import jp.co.thcomp.util.LogUtil;
 
-public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer, OnTouchListener {
+public class GLDrawView extends GLSurfaceView implements GLDrawViewController, GLSurfaceView.Renderer, OnTouchListener {
     protected static final int SORT_BY_ASC = 0;
     protected static final int SORT_BY_DESC = 1;
 
@@ -88,10 +89,35 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
         setOnTouchListener(this);
     }
 
+    @Override
+    public void initialize(int width, int height) {
+        GLES10.glViewport(0, 0, width, height);
+
+        mGLContext.setViewport(0, 0, width, height);
+        mGLContext.setGLConfiguration();
+        GLES10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+        GLES10.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES10.glColorMask(true, true, true, true);
+
+        GLES10.glEnable(GL10.GL_LINE_SMOOTH);
+    }
+
+    @Override
+    public GLContext getGLContext() {
+        return mGLContext;
+    }
+
+    @Override
+    public GLViewSpace getViewSpace() {
+        return mGLContext.getViewSpace();
+    }
+
+    @Override
     public void setSurfaceObserver(GLSurfaceObserver observer) {
         mObserver = observer;
     }
 
+    @Override
     public void startRenderer(GLContext glContext, Context context) {
         if (glContext == null) {
             glContext = new GLContext(this, context);
@@ -101,8 +127,14 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
         setRenderer(this);
     }
 
-    public GLContext getGLContext() {
-        return mGLContext;
+    @Override
+    public void requestRenderImpl() {
+        requestRender();
+    }
+
+    @Override
+    public void setRenderModeImpl(int mode) {
+        setRenderMode(mode);
     }
 
     public void setClearColor(int color) {
@@ -110,22 +142,6 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
         mClearColorR = ((float) ((color & 0x00FF0000) >> 16)) / 0xFF;
         mClearColorG = ((float) ((color & 0x0000FF00) >> 8)) / 0xFF;
         mClearColorB = ((float) ((color & 0x000000FF) >> 0)) / 0xFF;
-    }
-
-    public GLViewSpace getViewSpace() {
-        return mGLContext.getViewSpace();
-    }
-
-    public void initialize(GL10 gl, int width, int height) {
-        gl.glViewport(0, 0, width, height);
-
-        mGLContext.setViewport(0, 0, width, height);
-        mGLContext.setGLConfiguration();
-        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        gl.glColorMask(true, true, true, true);
-
-        gl.glEnable(GL10.GL_LINE_SMOOTH);
     }
 
     @Override
@@ -282,10 +298,10 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         LogUtil.i(GLConstant.TAG, ".onSurfaceChanged<S>");
 
-        initialize(gl, width, height);
+        initialize(width, height);
 
         if (mObserver != null) {
-            mObserver.onSurfaceChanged(gl, width, height);
+            mObserver.onSurfaceChanged(width, height);
         }
 
         synchronized (mDrawElementList) {
@@ -294,7 +310,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
                 drawElementList = mDrawElementList.getBySortedIndex(i);
                 if (drawElementList != null) {
                     for (int j = 0, sizeJ = drawElementList.size(); j < sizeJ; j++) {
-                        drawElementList.get(j).onSurfaceChanged(gl, width, height);
+                        drawElementList.get(j).onSurfaceChanged(width, height);
                     }
                 }
             }
@@ -302,7 +318,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
 
         synchronized (mDirtyDrawElementList) {
             for (int i = 0; i < mDirtyDrawElementList.size(); i++) {
-                mDirtyDrawElementList.get(i).onSurfaceChanged(gl, width, height);
+                mDirtyDrawElementList.get(i).onSurfaceChanged(width, height);
             }
         }
 
@@ -314,7 +330,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
         LogUtil.i(GLConstant.TAG, ".onSurfaceCreated<S>");
 
         if (mObserver != null) {
-            mObserver.onSurfaceCreated(gl, config);
+            mObserver.onSurfaceCreated(config);
         }
 
         synchronized (mDrawElementList) {
@@ -323,7 +339,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
                 drawElementList = mDrawElementList.getBySortedIndex(i);
                 if (drawElementList != null) {
                     for (int j = 0, sizeJ = drawElementList.size(); j < sizeJ; j++) {
-                        drawElementList.get(j).onSurfaceCreated(gl, config);
+                        drawElementList.get(j).onSurfaceCreated(config);
                     }
                 }
             }
@@ -331,7 +347,7 @@ public class GLDrawView extends GLSurfaceView implements GLSurfaceView.Renderer,
 
         synchronized (mDirtyDrawElementList) {
             for (int i = 0; i < mDirtyDrawElementList.size(); i++) {
-                mDirtyDrawElementList.get(i).onSurfaceCreated(gl, config);
+                mDirtyDrawElementList.get(i).onSurfaceCreated(config);
             }
         }
 

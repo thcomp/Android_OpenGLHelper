@@ -3,7 +3,7 @@ package jp.co.thcomp.glsurfaceview;
 public class GLCylinder extends GLPolygon {
 	private GLVertexFactory.CylinderInfo mCylinderInfo;
 
-	public GLCylinder(GLDrawView view) {
+	public GLCylinder(GLDrawViewController view) {
 		super(view);
 
 		mCylinderInfo = GLVertexFactory.getCylinderInfo();

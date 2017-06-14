@@ -14,6 +14,7 @@ import android.opengl.GLES10;
 import android.opengl.GLES11;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import android.view.View;
 
 public class GLTexture {
 	protected static final int TEXTURE_COORD_SIZE = 2;
@@ -24,17 +25,17 @@ public class GLTexture {
 		1.0f, 1.0f,
 		0.0f, 1.0f,
 	};
-	protected GLDrawView mView;
+	protected GLDrawViewController mView;
 	protected Integer mTextureId = null;
 	protected FloatBuffer mTextureRegion = null;
 	protected Bitmap mTextureBitmap = null;
 	protected boolean mAutoRecycle = true;
 
-	public GLTexture(GLDrawView view){
+	public GLTexture(GLDrawViewController view){
 		mView = view;
 	}
 
-	public GLTexture(GLDrawView view, boolean autoRecycle){
+	public GLTexture(GLDrawViewController view, boolean autoRecycle){
 		this(view);
 		mAutoRecycle = autoRecycle;
 	}

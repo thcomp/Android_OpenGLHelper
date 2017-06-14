@@ -150,11 +150,11 @@ public class GLPolygon3D extends GLDrawElement{
 	}
 
 	@Override
-	public void onSurfaceChanged(GL10 gl, int width, int height) {
+	public void onSurfaceChanged(int width, int height) {
 	}
 
 	@Override
-	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+	public void onSurfaceCreated(EGLConfig config) {
 	}
 
 	@Override

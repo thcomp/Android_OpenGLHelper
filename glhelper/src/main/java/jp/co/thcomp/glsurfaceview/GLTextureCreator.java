@@ -3,13 +3,14 @@ package jp.co.thcomp.glsurfaceview;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.view.View;
 
 public class GLTextureCreator {
-	public static GLTexture createGLTexture(GLDrawView view, Bitmap bitmap){
+	public static GLTexture createGLTexture(GLDrawViewController view, Bitmap bitmap){
 		return createGLTexture(view, bitmap, new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()));
 	}
 
-	public static GLTexture createGLTexture(GLDrawView view, Bitmap bitmap, Rect srcRect){
+	public static GLTexture createGLTexture(GLDrawViewController view, Bitmap bitmap, Rect srcRect){
 		GLTexture texture = new GLTexture(view, true);
 		int orgBitmapWidth = bitmap.getWidth();
 		int orgBitmapHeight = bitmap.getHeight();
