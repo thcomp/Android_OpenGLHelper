@@ -38,7 +38,7 @@ public class GLPolygon extends GLDrawElement{
 	protected ArrayList<ScaleInfo> mScaleInfoList = new ArrayList<ScaleInfo>();
 	protected ArrayList<TranslateInfo> mTranslateInfoList = new ArrayList<TranslateInfo>();
 
-	public GLPolygon(GLDrawView view){
+	public GLPolygon(GLDrawViewController view){
 		super(view);
 	}
 
@@ -387,7 +387,7 @@ public class GLPolygon extends GLDrawElement{
 				GLES11.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 				mTexture.bind();
 				if(mColors != null){
-					GLContext glContext = mView.mGLContext;
+					GLContext glContext = mView.getGLContext();
 					float[] colorArray = new float[]{mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3)};
 
 //					gl.glColor4f(mColors.get(0), mColors.get(1), mColors.get(2), mColors.get(3));
@@ -483,11 +483,11 @@ public class GLPolygon extends GLDrawElement{
 	}
 
 	@Override
-	public void onSurfaceChanged(GL10 gl, int width, int height) {
+	public void onSurfaceChanged(int width, int height) {
 	}
 
 	@Override
-	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+	public void onSurfaceCreated(EGLConfig config) {
 	}
 
 	@Override

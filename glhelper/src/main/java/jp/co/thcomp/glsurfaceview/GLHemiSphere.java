@@ -3,7 +3,7 @@ package jp.co.thcomp.glsurfaceview;
 public class GLHemiSphere extends GLPolygon {
 	private GLVertexFactory.HemiSphereInfo mHemiSphereInfo;
 
-	public GLHemiSphere(GLDrawView view) {
+	public GLHemiSphere(GLDrawViewController view) {
 		super(view);
 
 		mHemiSphereInfo = GLVertexFactory.getHemiSphereInfo();
