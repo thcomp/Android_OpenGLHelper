@@ -93,7 +93,7 @@ public class Droid3DCG extends BaseDroid3DCG {
 			break;
 		}
 
-		mView.requestRender();
+		mView.requestRenderImpl();
 	}
 
 	@Override

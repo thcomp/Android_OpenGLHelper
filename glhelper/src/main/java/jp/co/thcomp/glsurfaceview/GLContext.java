@@ -3,35 +3,44 @@ package jp.co.thcomp.glsurfaceview;
 import android.content.Context;
 import android.opengl.GLES10;
 import android.opengl.GLSurfaceView;
+import android.view.View;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 public class GLContext {
-    private GLDrawView mView;
+    protected GLDrawViewController mView;
     @SuppressWarnings("unused")
-    private Context mContext;
-    private GLViewSpace mViewSpace;
+    protected Context mContext;
+    protected GLViewSpace mViewSpace;
 
     private int mRenderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY;
-    private boolean mEnableDither = true;
-    private boolean mEnableLighting = false;
-    private boolean mEnableTexture = true;
-    private boolean mEnableDepthTest = true;
-    private int mDepthFunc = GL11.GL_LEQUAL;
-    private boolean mEnableBlend = true;
-    private boolean mEnableVBO = false;
-    private int mSFactor = GL11.GL_ONE;
-    private int mDFactor = GL11.GL_ONE_MINUS_SRC_ALPHA;
-    private int mProjectionType = GLConstant.ProjectionType.ORTHOGRAPHIC;
+    protected boolean mEnableDither = true;
+    protected boolean mEnableLighting = false;
+    protected boolean mEnableTexture = true;
+    protected boolean mEnableDepthTest = true;
+    protected int mDepthFunc = GL11.GL_LEQUAL;
+    protected boolean mEnableBlend = true;
+    protected boolean mEnableVBO = false;
+    protected int mSFactor = GL11.GL_ONE;
+    protected int mDFactor = GL11.GL_ONE_MINUS_SRC_ALPHA;
+    protected int mProjectionType = GLConstant.ProjectionType.ORTHOGRAPHIC;
 
-    public GLContext(GLDrawView view, Context context) {
+    public GLContext(GLDrawViewController view) {
+        this(view, view.getContext());
+    }
+
+    public GLContext(GLDrawViewController view, int projectionType) {
+        this(view, view.getContext(), projectionType);
+    }
+
+    public GLContext(GLDrawViewController view, Context context) {
         mView = view;
         mContext = context;
         mViewSpace = new GLViewSpace(mProjectionType);
     }
 
-    public GLContext(GLDrawView view, Context context, int projectionType) {
+    public GLContext(GLDrawViewController view, Context context, int projectionType) {
         mView = view;
         mContext = context;
         mProjectionType = projectionType;
@@ -43,7 +52,7 @@ public class GLContext {
     }
 
     public void setGLConfiguration() {
-        mView.setRenderMode(mRenderMode);
+        mView.setRenderModeImpl(mRenderMode);
         if (mEnableDither) {
             GLES10.glEnable(GL10.GL_DITHER);
         } else {
