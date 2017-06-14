@@ -6,7 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.PointF;
 
 import jp.co.thcomp.glsurfaceview.GLDrawElement;
-import jp.co.thcomp.glsurfaceview.GLDrawView;
+import jp.co.thcomp.glsurfaceview.GLDrawViewController;
 
 public abstract class BaseDroid3DCG extends GLDrawElement {
 	public static final int AxisX = Droid3DCGParts.AxisX;
@@ -22,14 +22,14 @@ public abstract class BaseDroid3DCG extends GLDrawElement {
 	private static final int PartsCount = PartsRFoot + 1;
 	private Droid3DCGParts[] mDroid3DCGParts;
 
-	public BaseDroid3DCG(final GLDrawView view) {
+	public BaseDroid3DCG(final GLDrawViewController view) {
 		super(view);
 		mDroid3DCGParts = new Droid3DCGParts[PartsCount];
 
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
-				GLDrawView view = mView;
+				GLDrawViewController view = mView;
 				Droid3DCGParts[] droid3DCGParts = mDroid3DCGParts;
 
 				for(int i=0; i<PartsCount; i++){
@@ -59,17 +59,17 @@ public abstract class BaseDroid3DCG extends GLDrawElement {
 	}
 
 	@Override
-	public void onSurfaceChanged(GL10 gl, int width, int height) {
+	public void onSurfaceChanged(int width, int height) {
 		Droid3DCGParts[] droid3DCGParts = mDroid3DCGParts;
 		for(int i=0; i<PartsCount; i++){
 			if(droid3DCGParts[i] != null){
-				droid3DCGParts[i].onSurfaceChanged(gl, width, height);
+				droid3DCGParts[i].onSurfaceChanged(width, height);
 			}
 		}
 	}
 
 	@Override
-	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+	public void onSurfaceCreated(EGLConfig config) {
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public abstract class BaseDroid3DCG extends GLDrawElement {
 
 		if(droid3DCGParts[partsType] != null){
 			droid3DCGParts[partsType].swing(degree, axis);
-			mView.requestRender();
+			mView.requestRenderImpl();
 		}
 	}
 
